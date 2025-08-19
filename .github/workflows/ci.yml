@@ -12,4 +12,13 @@ jobs:
 
       - name: Say Hello
         run: echo "Salam DevSecOps! İlk workflow yenidən işə düşdü ✅"
+      - name: Run dummy tests
+        run: |
+          echo "Running tests..."
+          echo "2+2 should be 4"
+          if [ $((2+2)) -eq 4 ]; then
+            echo "OK ✅";
+          else
+            echo "FAIL ❌"; exit 1;
+          fi
 
