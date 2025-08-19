@@ -1,0 +1,15 @@
+name: First Workflow
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Say Hello
+        run: echo "Salam DevSecOps! İlk workflow yenidən işə düşdü ✅"
+
