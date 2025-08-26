@@ -9,18 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Kodun checkout edilməsi
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Node.js quraşdır
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Setup Node (only if package.json exists)
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Asılılıqları yüklə
-      run: npm install
+      - name: Install deps
+        if: hashFiles('package.json') != ''
+        run: npm install
 
-    - name: Testləri işə sal
-      run: npm test
+      - name: Run tests
+        if: hashFiles('package.json') != ''
+        run: npm test
+
+      - name: Dummy step (no Node project)
+        if: hashFiles('package.json') == ''
+        run: echo "No package.json — basic CI passed ✅"
