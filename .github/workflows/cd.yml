@@ -2,35 +2,36 @@ name: CD Pipeline
 
 on:
   workflow_run:
-    workflows: ["CI Pipeline"]   # CI faylındakı name ilə EYNİ olsun
+    workflows: ["CI Pipeline"]   # Səndə CI run-ının adı necədirsə eyni yaz
     types: [completed]
 
 permissions:
   pages: write
   id-token: write
+  actions: read
+  contents: read
 
 jobs:
   deploy:
-    # yalnız CI uğurla bitibsə və branch main-dirsə deploy et (istəsən son sətri silə bilərsən)
     if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
     runs-on: ubuntu-latest
 
-    # BU BLOK vacibdir ki "View deployment" çıxsın
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Build artefaktını CI-dən endir
+      - name: Download artifact from CI
         uses: actions/download-artifact@v4
         with:
           name: site
           path: ./dist
+          run-id: ${{ github.event.workflow_run.id }}
 
-      - name: GitHub Pages-i konfiqurasiya et
+      - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Pages artefaktını yüklə
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
