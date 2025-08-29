@@ -1,0 +1,10 @@
+{
+  "name": "ci-cd-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "lint": "echo \"No lint step for demo\"",
+    "test": "node -e \"console.log('OK')\""
+  }
+}
